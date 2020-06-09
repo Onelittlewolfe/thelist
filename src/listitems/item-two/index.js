@@ -18,6 +18,7 @@ const ItemTwo = () => {
       overflow:hidden;
       width: 100vw;
       max-height: 100vh;
+      background-color: #000000;
       
     `}>
     <div  className={
