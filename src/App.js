@@ -1,24 +1,20 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import ItemOne from './listitems/item-one/index'
+import ItemTwo from './listitems/item-two/index'
+
+const bodyStyle = {
+  backgroundColor: '#000000',
+};
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={bodyStyle} className="App">
+     
+      <ItemOne />
+      <ItemTwo />
+
     </div>
   );
 }
