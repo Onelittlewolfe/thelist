@@ -11,6 +11,8 @@ const ItemOne = () => {
           overflow:hidden;
           width: 100vw;
           height: 60vh;
+          display: flex;
+          object-fit: cover;
           
         `}>
       <video className={
@@ -20,6 +22,10 @@ const ItemOne = () => {
           left: 0;
           width: 100%;
           height: auto;
+
+          @media screen and ( max-width: 740px ) {
+            top:-100px;
+          } 
         `
       } width='100%' height='100%' muted autoPlay loop>
         <source src={videoOne} type='video/mp4' /> 
