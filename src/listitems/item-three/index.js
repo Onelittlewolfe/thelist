@@ -13,7 +13,7 @@ const ItemThree = () => {
       display: flex;
       position: relative;
       width: 100%;
-      height: 100vh;
+      height: auto;
       flex-direction: row;
 
       @media screen and (max-width: 740px) {
