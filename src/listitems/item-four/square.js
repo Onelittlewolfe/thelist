@@ -6,8 +6,9 @@ import { css, jsx } from '@emotion/core';
 class Square extends React.Component {
   constructor(props){
     super(props);
-    this.state = { color: 0};
-    
+    this.state = { 
+      set: false};
+    this.color = 0;
     this.colors = [
         'red','blue','teal'
     ]
@@ -15,35 +16,37 @@ class Square extends React.Component {
   }
 
   componentDidMount(){
-    this.setState({color: this.props.color})
+    this.color = this.props.color;
+    this.setState({set: true})
+  }
+
+  componentDidUpdate() {
+    this.color = this.props.color;
   }
   
   handleClick() {
     const i = this.colors.length;
 
-    if ((this.state.color < i) && (this.state.color !== i-1)   ) {
-      this.setState({ color : 
-        this.state.color + 1
-      });
+    if ((this.color < i) && (this.color !== i-1)   ) {
+        this.color++;
+        this.props.action( {color: this.color, value: this.props.value});
     } else {
-      this.setState({ color : 
-        0
-      });
+        this.color = 0
+        this.props.action( {color: this.color, value: this.props.value});
     }
-    this.props.action( {color: this.state.color, value: this.props.value});
   }
 
  
 render() {
   const SquareStyle = 
     css`
-          width: 200px;
-          height: 200px;
-          background-color: ${this.colors[this.state.color]};
+          width: 10%;
+          height: 250px;
+          background-color: ${this.colors[this.color]};
           display: flex;
     `
   return(
-    <div data-value={this.props.value} color={this.state.color} css={SquareStyle} onClick={() => this.handleClick()}></div>
+    <div data-value={this.props.value} color={this.color} css={SquareStyle} onClick={() => this.handleClick()}></div>
   )
 }
   
