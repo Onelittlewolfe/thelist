@@ -2,7 +2,6 @@
 import React from 'react';
 import { css, jsx } from '@emotion/core';
 
-
 class Square extends React.Component {
   constructor(props){
     super(props);
@@ -10,7 +9,7 @@ class Square extends React.Component {
       set: false};
     this.color = 0;
     this.colors = [
-        'red','blue','teal'
+        'rgb(89, 208, 92)','rgba(255, 0, 130,1)','rgba(136,125,230,1)'
     ]
     
   }
@@ -40,16 +39,40 @@ class Square extends React.Component {
 render() {
   const SquareStyle = 
     css`
+          box-sizing: border-box;
           width: 10%;
           height: 250px;
+          opacity: 1;
           background-color: ${this.colors[this.color]};
           display: flex;
+          animation: pulse .8s ease-in-out infinite alternate;
+        
+          @keyframes pulse {
+            0% {opacity: 0.850}
+            100% {opacity: 1}
+          }
+
+          @media screen and ( max-width: 740px) {
+            width: 20%;
+            height: 150px;
+          }
     `
+
+  const styles = [
+    
+    css`
+          border: dashed 1px rgba(255,255,255, 0.3);
+          `,
+
+    css`
+          border: dashed 1px rgba(0,0,0, 0.3);
+          `,
+  ]
+
   return(
-    <div data-value={this.props.value} color={this.color} css={SquareStyle} onClick={() => this.handleClick()}></div>
-  )
-}
-  
+    <div data-value={this.props.value} color={this.color} css={[styles[0], SquareStyle]} onClick={() => this.handleClick()}></div>
+    )
+  }
 }
 
 export default Square;

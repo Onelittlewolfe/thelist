@@ -2,6 +2,8 @@
 import React from 'react';
 import { css, jsx } from '@emotion/core';
 import Square from './square';
+import Counter from './counter';
+import Modal from './modal';
 
 import audio1  from './audio/audio1.mp3';
 import audio2  from './audio/audio2.mp3';
@@ -10,25 +12,33 @@ import audio2  from './audio/audio2.mp3';
 class ItemFour extends React.Component {
   constructor(props){
     super(props);
+    this.state = {  matched: Array(20).fill(null),
+      counter: 0,
+      modalOpen: false
+    };
+    this.tiles = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19];
+
     this.Container = React.createRef();
     this.audio = React.createRef();
     this.audio2 = React.createRef();
-    this.tiles = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19];
-    this.state = {  matched: Array(20).fill(null),
-                    counter: 0
-                  };
-    this.checkWin = this.checkWin.bind(this);
+
+    this.updateVals = this.updateVals.bind(this);
+    this.doModal = this.doModal.bind(this);
   }
 
-  checkWin(props) {
+  updateVals(props) {
     const values = this.state.matched.slice();
     values[props.value] = props.color;
-    console.log(values);
+    // console.log(values);
     this.setState({matched: values})
     setTimeout( () => {
-      this.thing() 
+      this.compareVals() 
     }, 600)
-   
+  }
+
+  doModal() {
+    let modal = this.state.modalOpen ? false : true;
+    this.setState({modalOpen: modal});
   }
 
   componentDidMount() {
@@ -46,15 +56,12 @@ class ItemFour extends React.Component {
     this.audioContext = new AudioContext();
   }
 
-
-  thing() {
+  compareVals() {
     const results = this.state.matched.slice();
-    console.log('results', results)
+    // console.log('results', results)
     const correct = results.every( (val, i, arr) => val === arr[0] )  
 
-    console.log(correct);
     if (correct) {
-
         if (this.audioContext.state === 'suspended') {
             this.audioContext.resume();
 	        }
@@ -78,24 +85,25 @@ class ItemFour extends React.Component {
     } );
 
     this.setState({matched: matched});
-
-
     setTimeout( () => {
     if (this.audioContext.state === 'suspended') {
       this.audioContext.resume();
     }
-  
-    this.audio2.current.play(); 
-    this.setState({counter: this.state.counter + 1});
-    console.log(this.state.counter)
-  }, 1000)
-  
-    
+      this.audio2.current.play(); 
+      this.setState({counter: this.state.counter + 1});
+    // console.log(this.state.counter)
+    }, 1000)
   }
 
   renderSquare(i) {
     return(
-     <Square value={this.tiles[i]} color={this.state.matched[i]}  action={this.checkWin}  /> 
+     <Square value={this.tiles[i]} color={this.state.matched[i]}  action={this.updateVals}  /> 
+    )
+  }
+
+  renderModal(i) {
+    return(
+     <Modal total={this.state.counter} action={this.doModal}  /> 
     )
   }
  
@@ -104,9 +112,9 @@ class ItemFour extends React.Component {
     const containerStyle = 
     css`
       width: 100%;
+      height: auto;
       display: flex;
       flex-direction: row;
-      height: auto;
       position: relative;
       flex-direction: row;
       flex-direction: row;
@@ -114,40 +122,25 @@ class ItemFour extends React.Component {
       flex-grow: 1;
       justify-content: flex-start;
     `
-
-
-    const counterStyle = 
-    css`
-      position: absolute;
-      z-index: 200;
-      width: auto;
-      height: auto;
-      padding: 1em 2em;
-      top: 1em;
-      right: 1em;
-      background-color: rgba(255,255,255,0.8);
-
-      span {
-        display: inline-block;
-        font-size:2em;
-      }
-    `
-
+  
     const overlayStyle = 
     css`
-    width: 100%;
-    display: flex;
-    height: 0;
-    z-index: 800;
-    position: absolute;
-    top: 0;
-    left:0;
-    tranistion: all 1s;
+      width: 100%;
+      display: flex;
+      height: 0;
+      z-index: 800;
+      position: absolute;
+      top: 0;
+      left:0;
+      tranistion: all 1s;
     `
     
     return(
       <div css={containerStyle}  >
-        <div className='counter' css={counterStyle}><span>{this.state.counter}</span></div>
+        { (this.state.counter === 1  && this.state.modalOpen === false ) ? 
+        this.renderModal() :
+        null }
+        <Counter total={this.state.counter} />
         <audio src={audio1} ref={this.audio}></audio>
         <audio src={audio2} ref={this.audio2}></audio>
           <div css={overlayStyle} ref={this.Container}></ div>
