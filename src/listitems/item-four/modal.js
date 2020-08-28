@@ -28,7 +28,13 @@ const modalStyle = css`
         margin-bottom: auto;
         margin-left: auto;
         margin-right: auto;
-        
+      }
+
+      button {
+        background-color: red;
+        border: none;
+        padding: .6rem .5rem;
+        color: #fff;
       }
 `;
 
